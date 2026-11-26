@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ReconHub.Api/ReconHub.Api.csproj" />
+    <Project Path="src/ReconHub.Application/ReconHub.Application.csproj" />
+    <Project Path="src/ReconHub.Domain/ReconHub.Domain.csproj" />
+    <Project Path="src/ReconHub.Infrastructure/ReconHub.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ReconHub.IntegrationTests/ReconHub.IntegrationTests.csproj" />
+    <Project Path="tests/ReconHub.UnitTests/ReconHub.UnitTests.csproj" />
+  </Folder>
+</Solution>

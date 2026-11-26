@@ -1,0 +1,40 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{json,yml,yaml,xml,csproj,props,targets,slnx,ts,tsx,js,jsx,css,html,md}]
+indent_size = 2
+
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_sort_system_directives_first = true
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_prefer_braces = when_multiline:suggestion
+
+# Analyzer tuning
+# CA1515 (make public types internal) does not suit a layered solution whose types are shared across projects.
+dotnet_diagnostic.CA1515.severity = none
+# CA1848/CA1873: LoggerMessage source generation is a later optimisation, not a milestone-1 concern.
+dotnet_diagnostic.CA1848.severity = none
+dotnet_diagnostic.CA1873.severity = none
+# CA2007: ASP.NET Core has no synchronization context; ConfigureAwait(false) adds noise only.
+dotnet_diagnostic.CA2007.severity = none
+# CA1716: VB keyword clashes (e.g. a type named Error) are irrelevant for this C#-only product.
+dotnet_diagnostic.CA1716.severity = none
+# IDE0005 needs GenerateDocumentationFile to work in build; keep as IDE hint only.
+dotnet_diagnostic.IDE0005.severity = suggestion
+
+[{tests/**.cs}]
+# Test method names use underscores: Method_Scenario_Expectation.
+dotnet_diagnostic.CA1707.severity = none
+
+[**/Migrations/*.cs]
+generated_code = true
