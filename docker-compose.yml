@@ -7,10 +7,10 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: Developer
-      # Local development only. Override with an .env file or shell variable.
-      MSSQL_SA_PASSWORD: ${RECONHUB_SA_PASSWORD:-ReconHub_Dev_2026!}
+      # Set in a .env file next to this file (copy .env.example). Never commit the real value.
+      MSSQL_SA_PASSWORD: ${RECONHUB_SA_PASSWORD:?Set RECONHUB_SA_PASSWORD in .env (see .env.example)}
     ports:
-      - "1433:1433"
+      - "127.0.0.1:1433:1433" # loopback only: not reachable from the network
     volumes:
       - reconhub-sqldata:/var/opt/mssql
     healthcheck:

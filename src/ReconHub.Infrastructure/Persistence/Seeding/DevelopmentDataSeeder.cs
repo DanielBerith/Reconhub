@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -43,9 +44,11 @@ public sealed class DevelopmentDataSeeder(
     public async Task SeedAsync(CancellationToken cancellationToken)
     {
         var settings = options.Value;
-        if (string.IsNullOrWhiteSpace(settings.WmsApiKey) || string.IsNullOrWhiteSpace(settings.ErpApiKey))
+        if (IsUnset(settings.WmsApiKey) || IsUnset(settings.ErpApiKey))
         {
-            throw new InvalidOperationException("Seed:WmsApiKey and Seed:ErpApiKey must be set when Seed:Enabled is true.");
+            throw new InvalidOperationException(
+                "Seed:WmsApiKey and Seed:ErpApiKey must be set when Seed:Enabled is true. " +
+                "Set them with `dotnet user-secrets set` (see README); committed config only holds placeholders.");
         }
 
         tenantContext.SetTenant(DemoTenantId);
@@ -74,6 +77,10 @@ public sealed class DevelopmentDataSeeder(
 
         logger.LogInformation("Seeded demo tenant {TenantId} with {Wms}, {Erp} and flow '{FlowName}'", DemoTenantId, WmsName, ErpName, FlowName);
     }
+
+    /// <summary>Missing, blank, or still the "&lt;placeholder&gt;" from committed config.</summary>
+    private static bool IsUnset([NotNullWhen(false)] string? value) =>
+        string.IsNullOrWhiteSpace(value) || (value.StartsWith('<') && value.EndsWith('>'));
 }
 
 public static class SeedingExtensions

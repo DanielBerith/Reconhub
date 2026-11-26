@@ -99,6 +99,7 @@ public sealed class ReconciliationApiTests(ReconHubApiFactory factory) : IClassF
         await factory.RunDetectionAsync(Ct);
         var failed = (await ExceptionsForAsync(businessKey)).Should().ContainSingle(e => e.Type == ExceptionType.Failed).Subject;
         using var operatorClient = factory.CreateOperatorClient(TenantId);
+        factory.Clock.Advance(TimeSpan.FromMinutes(5)); // support resolves it later, so audit timestamps differ
 
         var withoutNote = await operatorClient.PostAsJsonAsync($"/api/exceptions/{failed.Id}/resolve", new { note = "  " }, Ct);
         var resolved = await operatorClient.PostAsJsonAsync($"/api/exceptions/{failed.Id}/resolve", new { note = "Re-sent from WMS." }, Ct);
